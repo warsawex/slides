@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Warsaw.ex demo presentation</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="warsaw.ex">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, use-scalable=no">
+
+  <link rel="stylesheet" href="vendors/reveal.js-3.7.0/css/reveal.css">
+  <link rel="stylesheet" href="vendors/warsawex/styles/red-dark.css">
+  <link rel="stylesheet" href="vendors/reveal.js-3.7.0/lib/css/zenburn.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section data-background="vendors/warsawex/images/wallpaper.png">
+      </section>
+
+      <section>
+        <h1>Keynote</h1>
+        <h3>2018-10-08</h3>
+      </section>
+
+      <section>
+        <!-- 1. Photo or avatar -->
+        <img src="images/kamil.jpg" width="200" height="200" />
+
+        <!-- 2. Name -->
+        <h3>Kamil Kowalski</h3>
+
+        <!-- 3. Contact -->
+        <h4><a href="https://twitter.com/kamil_kowalski">@kamil_kowalski</a></h4>
+
+        <!-- 4. Bio -->
+        <p>Cracking open some cold ones at Shedul / Fresha.</p>
+      </section>
+
+      <section>
+        <h2>Hello Warsaw 👋</h2>
+        <img src="images/andriy.jpg" width="100" height="100">
+        <img src="images/anita.jpg" width="100" height="100">
+        <img src="images/artur.jpg" width="100" height="100">
+        <img src="images/ewelina.jpg" width="100" height="100">
+        <img src="images/jakub.jpg" width="100" height="100">
+        <img src="images/kamil.jpg" width="100" height="100">
+        <img src="images/karol_c.jpg" width="100" height="100">
+        <img src="images/karol.jpg" width="100" height="100">
+        <img src="images/piotr.jpg" width="100" height="100">
+        <img src="images/robert.jpg" width="100" height="100">
+        <img src="images/sebastian.jpg" width="100" height="100">
+        <img src="images/szymon.jpg" width="100" height="100">
+      </section>
+
+      <section>
+        <h2>Why?</h2>
+        <ul>
+          <li>To build a community</li>
+          <li>To improve our skills</li>
+        </ul>
+      </section>
+
+      <section>
+        <section>
+          <h2>How?</h2>
+        </section>
+
+        <section>
+          <h2>Meetup and Facebook</h2>
+          <p>Meetup: <a href="https://www.meetup.com/warsaw-ex/">meetup.com/warsaw-ex</a></p>
+          <p>Facebook: <a href="https://www.facebook.com/warsawex.meetup/">facebook.com/warsawex.meetup</a></p>
+        </section>
+
+        <section>
+          <h2>Slack</h2>
+          <p>Stay in the loop at</p>
+          <p><a href="https://warsawex-slackin.herokuapp.com">warsawex-slackin.herokuapp.com</a></p>
+        </section>
+
+        <section>
+          <h2>Trello</h2>
+          <img src="images/organization.png" height="300">
+          <img src="images/talks.png" height="300">
+          <p>Organization board (left) and talks pipeline (right).</p>
+        </section>
+
+        <section>
+          <h2>GitHub</h2>
+          <p>Check out code and presentations at</p>
+          <p><a href="https://github.com/warsawex">github.com/warsawex</a></p>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>What is Elixir?</h2>
+        </section>
+
+        <section>
+          <h2>Functional</h2>
+
+          <blockquote>Functional programming is discipline imposed upon variable assignment.</blockquote>
+          Robert C. Martin
+        </section>
+
+        <section>
+          <h2>Dynamic</h2>
+
+          <dl>
+            <dt>Dynamic programming language</dt>
+            <dd>a class of high-level programming languages which, at runtime, execute many common
+              programming behaviors that static programming languages perform during compilation.</dd>
+          </dl>
+        </section>
+
+        <section>
+          <ul>
+            <li>Created by José Valim of Plataformatec 💪</li>
+            <li>Leverages 20+ years of Erlang/OTP experience</li>
+            <li>Focused on productivity and great programmer experience ✨</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <h2>Story time</h2>
+        <ul>
+          <li><strong>1986</strong> - initial Prolog-based Erlang implementation</li>
+          <li><strong>1992</strong> - BEAM implementation starts</li>
+          <li><strong>1996</strong> - first OTP release 🚀</li>
+          <li><strong>2011</strong> - first release of Elixir</li>
+          <li><strong>2012</strong> - major rewrite and v0.5.0 🎉</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>What's so cool about it?</h2>
+
+        <li>Cheap and safe concurrency 💰</li>
+        <li>Fault tolerance</li>
+        <li>Metaprogramming with hygenic macros 🛀</li>
+        <li>Maturity</li>
+        <li>Rich tooling 🛠</li>
+        <li>Distributed Erlang</li>
+        <li>Code hot-swapping 🔥</li>
+        <li>Performance*</li>
+      </section>
+
+      <section>
+        <section>
+          <h2>How does it work?</h2>
+
+          <ol>
+            <li>Elixir compiles to Erlang</li>
+            <li>Erlang compiles to bytecode</li>
+            <li>Bytecode runs on Erlang VM (BEAM)</li>
+          </ol>
+        </section>
+      </section>
+
+      <section>
+        <h2>Platform maturity</h2>
+
+        <ul>
+          <li>Takes lesson in previous work 📖</li>
+          <li>Keeps hight productivity</li>
+          <li><strong>Mix</strong> helps with building 🏗</li>
+          <li><strong>Built-in formatter</strong> helps avoid bikeshedding 🚲</li>
+          <li><strong>Hex</strong> manages dependencies</li>
+          <li><strong>ExDoc</strong> generates beautiful documentation 📜</li>
+          <li>Compatibility with Erlang extends ecosystem</li>
+          <li>Great libraries and frameworks (e.g. <strong>Phoenix</strong>, <strong>Ecto</strong>)</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <script src="vendors/reveal.js-3.7.0/lib/js/head.min.js"></script>
+  <script src="vendors/reveal.js-3.7.0/js/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'slide',
+      dependencies: [
+        // { src: 'lib/js/classList.js', condition: function () { return !document.body.classList; } },
+        // { src: 'plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+        // { src: 'plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+        { src: 'vendors/reveal.js-3.7.0/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+        // { src: 'plugin/search/search.js', async: true },
+        // { src: 'plugin/zoom-js/zoom.js', async: true },
+        // { src: 'plugin/notes/notes.js', async: true }
+      ],
+    });
+  </script>
+</body>
+
+</html>
