@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Warsaw.ex - Ecto & PostGiS</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="warsaw.ex">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, use-scalable=no">
+
+  <link rel="stylesheet" href="vendors/reveal.js-3.7.0/css/reveal.css">
+  <link rel="stylesheet" href="vendors/warsawex/styles/red-dark.css" id="theme">
+  <link rel="stylesheet" href="vendors/reveal.js-3.7.0/lib/css/zenburn.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section data-background="vendors/warsawex/images/wallpaper.png">
+      </section>
+
+      <section>
+        <h1>Ecto & PostGiS</h1>
+        <h3>performance and functionality</h3>
+        <h5>08-11-2018</h5>
+      </section>
+
+      <section>
+        <h2>About Me</h2>
+        <!-- 1. Photo or avatar -->
+        <img src="https://avatars2.githubusercontent.com/u/9743549?s=400&u=04abc831069c262077a92610fcbbcc0c6979fcd3&v=4" width="200" height="200" />
+
+        <!-- 2. Name -->
+        <h3>Piotr Rybarczyk</h3>
+        <h4><a href="https://github.com/Argonus">github</a></h4>
+
+        <!-- 3. Bio -->
+        <p>Just ex-geodesy student, who become programmer. As hobby... base stuff like coding,
+           playing games and listen to music. sometime swimming and skiing</p>
+      </section>
+
+      <section>
+        <h2>What is <stronf>Ecto</stronf>?</h2>
+        <p>It's a database wrapper and language integrated query for Elixir</p>
+
+        <h4>Why we need it here?</h4>
+        <p>It allows us to write clean, maintainable SQL queries on steroids and write it fast.</p>
+        <p>Also, it allows to map SQL data into structs, and not only plain data like strings but also GIS data like points or lines.</p>
+      </section>
+
+      <section>
+        <section>
+          <h2>What is <stronf>GIS</stronf>?</h2>
+          <p>A geographic information system (GIS) is a system designed to capture, store, manipulate, analyze, manage, and present spatial or geographic data.</p>
+
+          <h4>Why we need it here?</h4>
+          <p>It allows us to do all operations listed above with spatial/temporal/geographic data and with proper connections between them it makes "real" physical location on Earth.</p>
+        </section>
+
+        <section>
+          <h2>When/how/why we use <strong>GiS</strong></h2>
+          <p>It can be and it is used in "spatial" data systems around the world</p>
+          <p>Storing marketing information? Yes, it is.</p>
+          <p>Field investigation and analysis? Yep...</p>
+          <p>Nearest pub with beer? Of course...</p>
+        </section>
+      </section>
+
+      <section>
+        <h2>What is <strong>PostGiS</strong>?</h2>
+        <p>Its an OpenSource plugin to PostgreSQL which is adding support for GiS data.</p>
+
+        <h4>Why we need it here?</h4>
+        <p>It allows us to save, search, manipulate data in SQL database making it true spatial database management system. And we can do it using just SQL with some additional functions.</p>
+        <p>Also it supports Multi-dimensional spatial indexing!</p>
+      </section>
+
+      <section>
+        <h2>Where it comes together?</h2>
+
+        <ul>
+          <li>geo - A collection of GIS functions for Elixir</li>
+          <li>geo_postgis - Postgrex extension for PostGIS</li>
+          <li>topo - A Geometry library for Elixir that calculates spatial relationships between two geometries</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Installation</h2>
+
+        <pre>
+          <code class="hljs elixir">
+        defmodule PostGisSample.Mixfile do
+          defp deps do
+            [
+              # ....
+              {:geo, "~> 3.0", override: true},
+              {:geo_postgis, "~> 2.0"},
+              {:topo, "~> 0.1.0"}
+            ]
+          end
+        end
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <section>
+          <h2>Creating database table</h2>
+
+          <pre>
+            <code class="hljs elixir">
+              defmodule PostGisSample.Repo.Migrations.AddLocationsTable do
+                use Ecto.Migration
+
+                def up do
+                  execute "CREATE EXTENSION IF NOT EXISTS postgis"
+                  create table(:locations) do
+                    add :name, :string
+                    add :latitude, :decimal, precision: 9, scale: 7
+                    add :longitude, :decimal, precision: 9, scale: 7
+                    add :geom, :geometry
+                  end
+                  execute "CREATE INDEX idx_locations_geom ON locations using GIST(geom)"
+                end
+
+                def down do
+                  execute "DROP INDEX idx_locations_geom;"
+                  drop table(:locations)
+                  execute "DROP EXTENSION IF EXISTS postgis"
+                end
+              end
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          Geom is geometry data type for storing all types of spatial data.
+        </section>
+      </section>
+
+      <section>
+        <h3>And now we would like to save some data.</h3>
+
+        <pre>
+            <code class="hljs elixir">
+              def save!(name, longitude, latitude) do
+                name
+                |> build_struct(longitude, latitude)
+                |> PostGisSample.Repo.insert!()
+              end
+
+              defp build_struct(name, long, lat) do
+                %PostGisSample.Location{
+                  name: name,
+                  longitude: long,
+                  latitude: lat,
+                  geom: %Geo.Point{
+                    coordinates: {long, lat},
+                    srid: 4326
+                  }
+                }
+              end
+            </code>
+          </pre>
+      </section>
+
+
+      <section>
+        <section>
+        <h3>We would like to find our data right now.</h3>
+
+        <pre>
+            <code class="hljs elixir">
+            def find_location(long, lat, radius) do
+              long
+              |> build_point(lat)
+              |> build_query(radius)
+              |> PostGisSample.Repo.one()
+            end
+
+            defp build_point(long, lat) do
+              %Geo.Point{
+                coordinates: {long, lat},
+                srid: 4326
+              }
+            end
+
+            defp build_query(center, radius) do
+              import Ecto.Query
+
+              from(
+                locations in PostGisSample.Location,
+                where:
+                  fragment(
+                    "ST_DWithin(geom::geography, ?, ?)",
+                    ^center,
+                    ^radius
+                  )
+              )
+            end
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h3>Power of macros</h3>
+
+          <pre>
+            <code class="hljs elixir">
+              defmacro in_radius(column, center, radius) do
+                quote do
+                  fragment("ST_DWithin(?::geography, ?, ?)",
+                    unqote(column),
+                    unqote(center),
+                    unqote(radius))
+                end
+              end
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h3>Power of macros</h3>
+
+          <pre>
+            <code class="hljs elixir">
+              def find_location(long, lat, radius) do
+                long
+                |> build_point(lat)
+                |> build_query(radius)
+                |> PostGisSample.Repo.one()
+              end
+
+              defp build_point(long, lat) do
+                %Geo.Point{
+                  coordinates: {long, lat},
+                  srid: 4326
+                }
+              end
+
+              defp build_query(center, radius) do
+                import Ecto.Query
+
+                from(
+                  locations in PostGisSample.Location,
+                  where: in_radius(locations.geom, center, radius)
+                )
+              end
+            </code>
+          </pre>
+        </section>
+      </section>
+
+      <section>
+        <h2>And we can build structs from data</h2>
+        <pre>
+          <code class="hljs elixir">
+            def box2d() do
+              import Ecto.Query
+
+              query = from(
+                l in PostGisSample.Location,
+                  select: %{
+                    box: fragment("ST_AsGeoJSON(ST_Extent(?), 15, 1) AS box", l.geom)
+                  }
+              )
+
+              query
+              |> PostGisSample.Repo.one()
+              |> Map.get(:box)
+              |> Poison.decode!()
+            end
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <section>
+          <h2>What is Bounding Box?</h2>
+
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Minimum_bounding_rectangle.svg/1200px-Minimum_bounding_rectangle.svg.png" width="500" height="250" />
+        </section>
+
+        <section>
+          <img src="images/london-google.png" width="500" height="500" />
+        </section>
+
+        <section>
+          <img src="images/london-fresha.png" width="500" height="500" />
+        </section>
+      </section>
+
+      <section>
+        <h2>Other Databases?</h2>
+        <p>For example ElasticSearch or SOLR</p>
+      </section>
+
+      <section>
+        <h4>What interesting I found doing this presentation.</h4>
+        <p>Check this guy: <a href="https://tjukanov.org/">Topi Tjukanov</a></p>
+        <img src="https://static1.squarespace.com/static/5a25370fc027d841ff016862/5a363a7a71c10b467b1f7f52/5a363b0be2c48362969cda99/1513503523882/barcelona.gif?format=2500w"  height="500">
+      </section>
+
+  <script src="vendors/reveal.js-3.7.0/lib/js/head.min.js"></script>
+  <script src="vendors/reveal.js-3.7.0/js/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'slide',
+      dependencies: [
+        // { src: 'lib/js/classList.js', condition: function () { return !document.body.classList; } },
+        // { src: 'plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+        // { src: 'plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+        { src: 'vendors/reveal.js-3.7.0/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+        // { src: 'plugin/search/search.js', async: true },
+        // { src: 'plugin/zoom-js/zoom.js', async: true },
+        // { src: 'plugin/notes/notes.js', async: true }
+      ],
+    });
+  </script>
+  <script>
+    (function () {
+      var nodes = document.querySelectorAll('[data-theme-switch]');
+      for (var i = 0; i < nodes.length; i += 1) {
+        nodes.item(i).addEventListener('click', function (event) {
+          event.preventDefault();
+          const themeName = event.target.getAttribute('data-theme');
+          document.getElementById('theme').setAttribute('href', 'vendors/warsawex/styles/' + themeName + '.css');
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>
