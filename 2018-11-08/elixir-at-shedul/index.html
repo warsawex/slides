@@ -214,14 +214,71 @@
       </section>
 
       <section>
-        <h2>Coding challenges</h2>
+        <section>
+          <h2>Coding challenges</h2>
 
-        <ul>
-          <li>Call Ruby code from Elixir</li>
-          <li>Configure apps via environment variables</li>
-          <li>Share session with Rails</li>
-          <li>Render JSON API</li>
-        </ul>
+          <ul>
+            <li>Call Ruby code from Elixir</li>
+            <li>Share session with Rails</li>
+            <li>Configure apps via environment variables</li>
+            <li>Render JSON API</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>RPC Server</h2>
+
+          <pre><code class="hljs elixir">defmodule Accounts.RPC do
+  use Protein.Server
+
+  proto(:create_user)
+end
+
+defmodule Accounts.RPC.CreateUserService do
+  alias Accounts.RPC.CreateUser.{Request, Response}
+
+  def call(%Request{email: email}) do
+    user = # ...
+
+    {:ok, %Response{id: user.id}
+  end
+end</code></pre>
+        </section>
+
+        <section>
+          <h2>RPC Client</h2>
+
+          <pre><code class="hljs elixir">defmodule MyApp.AccountsRPC do
+  use Protein.Client
+
+  proto(:create_user)
+end
+
+# The call
+alias MyApp.AccountsRPC.CreateUser.Request
+request = %Request{email: "user@example.com"}
+%{id: user_id} = MyApp.AccountsRPC.call!(request)</code></pre>
+        </section>
+
+        <section>
+          <h2>PlugDeviseSession</h2>
+
+          <pre><code class="hljs elixir"># in endpoint.ex
+plug(
+  PlugDeviseSession,
+  key: "_my_app_session",
+  domain: "*.myapp.com"
+)
+
+# in controller
+case PlugDeviseSession.Helpers.get_user_auth_data(conn) do
+  {employee_id, _} ->
+    # good to go
+
+  nil ->
+    # not logged in
+end</code></pre>
+        </section>
       </section>
 
       <section>
