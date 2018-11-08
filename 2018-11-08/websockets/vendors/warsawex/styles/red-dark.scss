@@ -1,0 +1,29 @@
+/**
+ * Dark red theme for reveal.js.
+ *
+ * Copyright (C) 2018 warsaw.ex team.
+ */
+
+// Default mixins and settings -----------------
+@import "../../reveal.js-3.7.0/css/theme/template/mixins";
+@import "../../reveal.js-3.7.0/css/theme/template/settings";
+// ---------------------------------------------
+
+// Include theme-specific fonts
+@import url(../../reveal.js-3.7.0/lib/font/league-gothic/league-gothic.css);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
+
+@import "_shared";
+
+// Override theme settings (see ../template/settings.scss)
+$mainColor: white;
+$headingColor: $color-red-1;
+$headingTextShadow: none;
+$backgroundColor: $color-red-3;
+$linkColor: darken($color-red-2, 20%);
+$linkColorHover: lighten( $linkColor, 20% );
+$selectionBackgroundColor: rgba(79, 64, 28, 0.99);
+
+// Theme template ------------------------------
+@import "../../reveal.js-3.7.0/css/theme/template/theme";
+// ---------------------------------------------

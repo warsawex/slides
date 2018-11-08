@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Warsaw.ex demo presentation</title>
+
+    <meta name="description" content="">
+    <meta name="author" content="warsaw.ex">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, use-scalable=no">
+
+    <link rel="stylesheet" href="vendors/reveal.js-3.7.0/css/reveal.css">
+    <link rel="stylesheet" href="vendors/warsawex/styles/violet-dark.css" id="theme">
+    <link rel="stylesheet" href="vendors/reveal.js-3.7.0/lib/css/zenburn.css">
+</head>
+
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section data-background="vendors/warsawex/images/wallpaper.png">
+        </section>
+
+        <section>
+            <h2>Speaker details</h2>
+            <!-- 1. Photo or avatar -->
+            <img src="vendors/warsawex/images/avatar.png" width="200" height="200" />
+
+            <!-- 2. Name -->
+            <h3>Artur Sulecj</h3>
+
+            <!-- 3. Contact -->
+            <h4><a href="https://www.linkedin.com/in/artursulej">@artursulej</a></h4>
+
+            <!-- 4. Bio -->
+            <p>I love DIY, wine making and riding a motorcycle. <br>Not simultaneously.</p>
+        </section>
+
+        <section>
+            <h1>Websockets in Phoenix</h1>
+            <h3>2018-10-08</h3>
+        </section>
+
+        <section>
+            <h2>What is websocket?</h2>
+            <ul>
+                <li>A protocol</li>
+                <li>An alternative to HTTP requests</li>
+                <li>Two-way communication</li>
+                <li>Persistent connection</li>
+                <li>Real-time</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Plan for application</h2>
+            <ol>
+                <li>Generating new project</li>
+                <li>Generating channel</li>
+                <li>Simple example</li>
+                <li>Painting pixels</li>
+                <li>Persistence</li>
+                <li>Fetching data at join</li>
+                <li>Multiple boards</li>
+                <li>Authentication</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>🥩🍴</h2>
+            <h5>Coding…</h5>
+        </section>
+
+        <section>
+            <h2><a href="https://github.com/hot-cheese/pixelz">Code @ GitHub</a></h2>
+            <h2><a href="https://pixelixir.herokuapp.com">App @ Heroku</a></h2>
+        </section>
+    </div>
+</div>
+
+<script src="vendors/reveal.js-3.7.0/lib/js/head.min.js"></script>
+<script src="vendors/reveal.js-3.7.0/js/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    transition: "slide",
+    dependencies: [
+      // { src: 'lib/js/classList.js', condition: function () { return !document.body.classList; } },
+      // { src: 'plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+      // { src: 'plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+      {
+        src: "vendors/reveal.js-3.7.0/plugin/highlight/highlight.js",
+        async: true,
+        callback: function () { hljs.initHighlightingOnLoad() }
+      },
+      // { src: 'plugin/search/search.js', async: true },
+      // { src: 'plugin/zoom-js/zoom.js', async: true },
+      // { src: 'plugin/notes/notes.js', async: true }
+    ],
+  })
+</script>
+<script>
+  (function () {
+    var nodes = document.querySelectorAll("[data-theme-switch]")
+    for (var i = 0; i < nodes.length; i += 1) {
+      nodes.item(i).addEventListener("click", function (event) {
+        event.preventDefault()
+        const themeName = event.target.getAttribute("data-theme")
+        document.getElementById("theme").setAttribute("href", "vendors/warsawex/styles/" + themeName + ".css")
+      })
+    }
+  })()
+</script>
+</body>
+
+</html>

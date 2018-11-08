@@ -1,0 +1,20 @@
+$color-violet-1: #6d52a2;
+$color-violet-2: #a1509f;
+$color-violet-3: #1e2d42;
+
+$color-red-1: #e8355f;
+$color-red-2: #e83461;
+$color-red-3: #1d2c3e;
+
+.reveal mark {
+  padding: 0 0.2em;
+}
+
+.reveal code {
+  // background-color: #444;
+  padding: 0 0.2em;
+}
+
+.reveal dd + dt {
+  margin-top: 0.5em;
+}
