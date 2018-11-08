@@ -52,7 +52,7 @@ body {
 .reveal h5,
 .reveal h6 {
   margin: 0 0 20px 0;
-  color: #6d52a2;
+  color: #d6caee;
   font-family: "League Gothic", Impact, sans-serif;
   font-weight: normal;
   line-height: 1.2;
@@ -216,8 +216,8 @@ body {
  * LINKS
  *********************************************/
 .reveal a {
-  color: #6d52a2;
-  text-decoration: none;
+  color: #d6caee;
+  text-decoration: underline;
   -webkit-transition: color .15s ease;
   -moz-transition: color .15s ease;
   transition: color .15s ease; }
