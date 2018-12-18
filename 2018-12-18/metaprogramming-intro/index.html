@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Warsaw.ex demo presentation</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="warsaw.ex">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, use-scalable=no">
+
+  <link rel="stylesheet" href="vendors/reveal.js-3.7.0/css/reveal.css">
+  <link rel="stylesheet" href="vendors/warsawex/styles/violet-dark.css">
+  <link rel="stylesheet" href="vendors/reveal.js-3.7.0/lib/css/zenburn.css">
+  <link rel="stylesheet" href="styles/styles.css">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section data-background="vendors/warsawex/images/wallpaper.png">
+      </section>
+
+      <section>
+        <h1>An Introduction to Metaprogramming</h1>
+        <h3>2018-12-18</h3>
+      </section>
+
+      <section>
+        <img src="images/kamil.jpg" width="200" height="200" />
+        <h3>Kamil Kowalski</h3>
+        <h4><a href="https://twitter.com/kamil_kowalski">@kamil_kowalski</a></h4>
+        <p>Elixir Nerd @ Shedul / Fresha</p>
+      </section>
+
+      <section>
+        <section>
+          <h2>Metaprogramming ≝</h2>
+
+          <ul>
+            <li>Ability of programming languages <br> to treat programs as data.</li>
+            <li>Allows for programs to read and modify code.</li>
+            <li>Reduces boilerplate and provides <br> compile-time guarantees</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Examples of Metaprogramming</h2>
+
+          <ul>
+            <li>Macros</li>
+            <li>Metaclasses</li>
+            <li>Templates</li>
+            <li>Multi-staged compilation</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>Elixir vs Ruby</h2>
+          <img src="images/thesis_defense_2x.png" width="500">
+        </section>
+
+        <section>
+          <h2>The Ruby Way</h2>
+
+          <ul>
+            <li>Metaclasses 🤔</li>
+            <li>Eigenclasses ⁉️</li>
+            <li>Dynamic method definition ⚡️</li>
+            <li>Verified at runtime 🏃‍♀️</li>
+            <li>Often too flexible 📏</li>
+            <li>Can lead to unexpected results 🔀</li>
+          </ul>
+        </section>
+
+        <section>
+          <pre><code class="hljs ruby">class Foo
+  def bar
+    "Real implementation"
+  end
+end
+
+Foo.new.bar # => "Real implementation"
+
+Foo.define_method(:bar) { "Fake implementation" }
+
+Foo.new.bar # => "Fake implementation"</code></pre>
+        </section>
+
+        <section>
+          <pre><code class="hljs ruby">def Bar
+  def method_missing(*args)
+    "This method exists"
+  end
+end
+
+bar = Bar.new
+
+bar.to_s # => "This method exists"
+bar.no_it_doesnt # => "This method exists"</code></pre>
+        </section>
+
+        <section>
+          <pre><code class="hljs ruby">class String
+  def length
+    1
+  end
+end
+
+"Lorem ipsum dolor sit amet".length # => 1</code></pre>
+        </section>
+
+        <section>
+          <h2>The Elixir Way</h2>
+
+          <p><small class="smaller">(The Right Way)</small></p>
+
+          <ul>
+            <li>Metaprogramming using hygenic 🛀 macros</li>
+            <li>Verified at compile time 🔍</li>
+            <li>Simple rules of macro expansion 💆‍♂️</li>
+          </ul>
+        </section>
+
+        <section>
+          <pre><code class="hljs elixir">defmodule Foo do
+  def bar, do: "Real bar"
+end
+
+defmodule Foo do
+  def bar, do: "Fake bar"
+end
+
+#> warning: redefining module Foo \
+#  (current version defined in memory)</code></pre>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>Hygienic macros?</h2>
+
+          <img src="images/shower.jpg">
+        </section>
+
+        <section>
+          <ul>
+            <li>Do not pollute the environment</li>
+            <li>The environment does not pollute macros</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Consider C</h2>
+          <pre><code class="hljs cpp">#define INCREMENT(i) \
+  {                  \
+    int a = 0;       \
+    i++;             \
+  }
+
+int main(void)
+{
+  int a = 4, b = 6;
+  INCREMENT(a);
+  INCREMENT(b);
+  printf("a is now %d, b is now %d\n", a, b);
+  return 0;
+}</code></pre>
+        </section>
+
+        <section>
+          <h2>😱</h2>
+
+          <pre><code class="hljs cpp">int main(void)
+{
+  int a = 4, b = 6;
+  { int a = 0; a++; }
+  { int a = 0; b++; }
+  printf("a is now %d, b is now %d\n", a, b);
+  return 0;
+}
+// => a is now 4, b is now 7</code></pre>
+        </section>
+
+        <section>
+          <h2>Back to Elixirland</h2>
+
+          <pre><code class="hljs elixir">defmodule Math do
+  defmacro increment(i) do
+    quote do
+      a = 0
+      unquote(i) + 1
+    end
+  end
+end</code></pre>
+        </section>
+
+        <section>
+          <pre><code class="hljs elixir">defmodule Report do
+  require Math
+
+  def run do
+    a = 4
+    b = 6
+
+    a = Math.increment(a)
+    b = Math.increment(b)
+
+    IO.puts("a is now #{a}, b is now #{b}")
+  end
+end
+
+Report.run # => a is now 5, b is now 7</code></pre>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>Elixir AST</h2>
+          <h3>AKA Quoted Expressions</h3>
+        </section>
+
+        <section>
+          <h3>Usually</h3>
+          <p>Program translated to AST in target language</p>
+
+          <h3>Elixir</h3>
+          <p>AST (quoted expressions) represented with <br> Elixir data structures</p>
+          </ul>
+        </section>
+
+        <section>
+          <p>Using <code>quote/2</code> to preview quoted expressions:</p>
+
+          <pre><code class="hljs elixir">iex> quote do: 1 + 2
+{:+, [context: Elixir, import: Kernel], [1, 2]}
+
+iex> quote do: IO.puts("Hello, world")
+{
+  {
+    :.,
+    [],
+    [{:__aliases__, [alias: false], [:IO]}, :puts]
+  }, # Function
+  [], # Metadata
+  ["Hello, world"] # Arguments
+}</code></pre>
+        </section>
+
+        <section>
+          <h2>Elixir Compilation</h2>
+
+          <p>Parse Elixir</p>
+          ⬇
+          <p><strong class="underline">Expand Macros</strong></p>
+          ⬇
+          <p>Compile to Erlang</p>
+          ⬇
+          <p>Compile to bytecode</p>
+        </section>
+
+        <section>
+          <h2>Macro Expansion</h2>
+
+          <pre><code class="hljs elixir">defmodule Conditional do
+  defmacro unless(condition, do: expr) do
+    quote do
+      if(!unquote(condition), do: unquote(expr))
+    end
+  end
+end</code></pre>
+        </section>
+
+        <section>
+          <pre><code class="hljs elixir">iex> require Conditional
+iex> quoted = quote do: Conditional.unless true, do: 5
+{
+  {:., [], [{:__aliases__, [alias: false], [:Conditional]}, :unless]},
+  [],
+  [true, [do: 5]]
+}
+
+iex> Macro.expand_once(quoted, __ENV__)
+{
+  :if,
+  [context: Conditional, import: Kernel],
+  [{:!, [context: Conditional, import: Kernel], [true]}, [do: 5]]
+}</code></pre>
+        </section>
+
+        <section>
+          <pre><code class="hljs elixir">iex> Macro.expand(quoted, __ENV__)
+{:case, [optimize_boolean: true],
+  [
+    {:!, [context: Conditional, import: Kernel], [true]},
+    [
+      do: [
+        {:->, [],
+          [
+            [
+              {:when, [],
+              [
+                {:x, [counter: -576460752303423263], Kernel},
+                {{:., [], [Kernel, :in]}, [],
+                  [{:x, [counter: -576460752303423263], Kernel}, [false, nil]]}
+              ]}
+            ],
+            nil
+          ]},
+        {:->, [], [[{:_, [], Kernel}], 5]}
+      ]
+    ]
+  ]}</code></pre>
+        </section>
+
+        <section>
+          <p>Macro expansion happens recursively, <br> until nothing can be expanded any further.</p>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>Use Case: Compile-Time Perks</h2>
+
+          <ul>
+            <li>Needed to send events from multiple systems</li>
+            <li>How to validate payload?</li>
+            <li>JSON Schema - platform-agnostic solution</li>
+            <li>Reading schema files at runtime - error prone and lots of I/O</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Use Case: File Downloader</h2>
+
+          <ul>
+            <li>Wanted to use GeoIP database</li>
+            <li>Didn't want it in the repository</li>
+            <li>Decided to download during compilation</li>
+            <li>SHA-256 the file to ensure content integrity</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <h2>Thank You!</h2>
+        <h2>🙇‍♂️</h2>
+      </section>
+    </div>
+  </div>
+
+  <script src="vendors/reveal.js-3.7.0/lib/js/head.min.js"></script>
+  <script src="vendors/reveal.js-3.7.0/js/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'slide',
+      dependencies: [
+        // { src: 'lib/js/classList.js', condition: function () { return !document.body.classList; } },
+        // { src: 'plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+        // { src: 'plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+        { src: 'vendors/reveal.js-3.7.0/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+        // { src: 'plugin/search/search.js', async: true },
+        // { src: 'plugin/zoom-js/zoom.js', async: true },
+        // { src: 'plugin/notes/notes.js', async: true }
+      ],
+    });
+  </script>
+</body>
+
+</html>
