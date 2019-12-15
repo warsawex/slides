@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Warsaw.ex demo presentation</title>
+
+    <meta name="description" content="" />
+    <meta name="author" content="warsaw.ex" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, use-scalable=no"
+    />
+
+    <link rel="stylesheet" href="vendors/reveal.js-3.7.0/css/reveal.css" />
+    <link rel="stylesheet" href="vendors/warsawex/styles/violet-dark.css" />
+    <link rel="stylesheet" href="vendors/reveal.js-3.7.0/lib/css/zenburn.css" />
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-background="vendors/warsawex/images/wallpaper.png"
+        ></section>
+
+        <section>
+          <h1>Nervous Monitoring</h1>
+          <h3>Building an Air Quality Monitor with Nerves</h3>
+          <h3>2019-12-17</h3>
+        </section>
+
+        <section>
+          <img src="images/kamil.jpg" width="200" height="200" />
+          <h3>Kamil Kowalski</h3>
+          <h4><a href="https://github.com/kamilkowalski">@kamilkowalski</a></h4>
+          <p>Elixir Nerd @ Fresha / Shedul</p>
+        </section>
+
+        <section>
+          <section>
+            <h2>Air Pollution</h2>
+            <img src="images/industry.jpg" height="400" />
+            <p>
+              <small
+                >Image by
+                <a
+                  href="https://pixabay.com/users/Foto-Rabe-715168/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=611668"
+                  >Foto-Rabe</a
+                >
+                from
+                <a
+                  href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=611668"
+                  >Pixabay</a
+                ></small
+              >
+            </p>
+          </section>
+          <section>
+            <h2>Key Facts</h2>
+
+            <ul>
+              <li>4.2m premature deaths in 2016 alone</li>
+              <li>91% of population lives in polluted areas</li>
+              <li>indicated by high PM</li>
+            </ul>
+
+            <p>
+              <small
+                >source:
+                <a
+                  href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health"
+                  >who.int</a
+                ></small
+              >
+            </p>
+          </section>
+          <section>
+            <h2>Particulate Matter</h2>
+
+            <ul>
+              <li>
+                sulfate, nitrates, ammonia, sodium chloride, black carbon,
+                mineral dust and water
+              </li>
+              <li>
+                PM2.5 can penetrate the lung barrier and enter the blood system
+              </li>
+            </ul>
+
+            <p>
+              <small
+                >source:
+                <a
+                  href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health"
+                  >who.int</a
+                ></small
+              >
+            </p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Nerves</h2>
+
+            <ul>
+              <li>framework for embedded applications</li>
+              <li>handles cross-compilation, networking, software updates</li>
+              <li>leverages Erlang for reliability</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Easy Start</h2>
+            <pre><code class="hljs bash">mix archive.install hex nerves_bootstrap
+mix nerves.new air_quality_monitor</code></pre>
+          </section>
+
+          <section>
+            <h2>Pushing Firmware</h2>
+            <img src="images/board.jpg" height="400" />
+            <p>
+              <small
+                >Image by
+                <a
+                  href="https://pixabay.com/users/blickpixel-52945/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=453758"
+                  >Michael Schwarzenberger</a
+                >
+                from
+                <a
+                  href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=453758"
+                  >Pixabay</a
+                ></small
+              >
+            </p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Simple Logging Monitor</h2>
+
+            <ul>
+              <li>Raspberry Pi Zero WH</li>
+              <li>Plantower PMS 7003 (w/ adapter)</li>
+              <li>wires and 5V USB charger</li>
+            </ul>
+          </section>
+
+          <section>
+            <img src="images/IMG_0289.jpg" height="500" />
+          </section>
+
+          <section>
+            <img src="images/IMG_3194.jpg" height="500" />
+          </section>
+
+          <section>
+            <img src="images/pms-pins.png" height="500" />
+            <p>
+              <small
+                >source:
+                <a href="http://plantower.com/en/">plantower.com</a></small
+              >
+            </p>
+          </section>
+
+          <section>
+            <img src="images/message-format.png" height="500" />
+            <p>
+              <small
+                >source:
+                <a href="http://plantower.com/en/">plantower.com</a></small
+              >
+            </p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Adding UI</h2>
+
+            <img src="images/phoenix.png" height="300" />
+          </section>
+
+          <section>
+            <h2>Meet Poncho</h2>
+            <img src="images/poncho.jpg" height="400" />
+            <p><small>Photo by Lewis Parsons on Unsplash</small></p>
+          </section>
+
+          <section>
+            <h2>Poncho Structure</h2>
+
+            <ul>
+              <li>air_quality_monitor</li>
+              <ul>
+                <li>air_quality_monitor_firmware</li>
+                <ul>
+                  <li>mix.exs</li>
+                </ul>
+                <li>air_quality_monitor_ui</li>
+                <ul>
+                  <li>mix.exs</li>
+                </ul>
+              </ul>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Adding WebSockets</h2>
+
+            <img src="images/socket.jpg" height="400" />
+            <p><small>Photo by Neven Krcmarek on Unsplash</small></p>
+          </section>
+
+          <section>
+            <h2>Wrapping Up</h2>
+
+            <ul>
+              <li>configuring firmware to use UI</li>
+              <li>
+                accessing our application at
+                <a href="http://nerves.local">nerves.local</a>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Check It Out</h2>
+
+            <p>
+              <a
+                href="https://github.com/kamilkowalski/air_quality_monitor"
+                target="_blank"
+                >kamilkowalski/air_quality_monitor</a
+              >
+            </p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Wanna Learn Nerves?</h2>
+            <ul>
+              <li>Workshops: February 2020</li>
+              <li>
+                Follow on
+                <a href="https://www.facebook.com/warsawex.meetup/">Facebook</a>
+                and <a href="https://www.meetup.com/warsaw-ex/">Meetup</a>
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h2>Thank You!</h2>
+
+            <h3>🙇‍♂️</h3>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script src="vendors/reveal.js-3.7.0/lib/js/head.min.js"></script>
+    <script src="vendors/reveal.js-3.7.0/js/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: "slide",
+        dependencies: [
+          // { src: 'lib/js/classList.js', condition: function () { return !document.body.classList; } },
+          // { src: 'plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+          // { src: 'plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+          {
+            src: "vendors/reveal.js-3.7.0/plugin/highlight/highlight.js",
+            async: true,
+            callback: function() {
+              hljs.initHighlightingOnLoad();
+            }
+          }
+          // { src: 'plugin/search/search.js', async: true },
+          // { src: 'plugin/zoom-js/zoom.js', async: true },
+          // { src: 'plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+  </body>
+</html>
